@@ -9,6 +9,7 @@ const {
   getProfile,
 } = require("../controllers/userAuthent");
 const { userMiddleware } = require("../Middleware/userMiddleware");
+const { adminMiddleware } = require("../Middleware/adminMiddleware");
 
 authRouter.post("/register", register);
 authRouter.post("/login", login);
