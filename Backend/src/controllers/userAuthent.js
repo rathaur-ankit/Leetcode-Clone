@@ -10,9 +10,9 @@ const register = async (req, res) => {
     const { emailId, password, firstName } = req.body;
     req.body.password = await bcrypt.hash(password, 10);
     req.body.role = "user";
-    await User.create(req.body);
+    const user = await User.create(req.body);
     const token = jwt.sign(
-      { _id: User._id, emailId: emailId, role: "user" },
+      { _id: user._id, emailId: emailId, role: "user" },
       process.env.SECRET_KEY,
       { expiresIn: 60 * 60 },
     );
@@ -58,13 +58,13 @@ const logout = async (req, res) => {
 
 const adminRegister = async (req, res) => {
   try {
+    if (req.body.role != "admin") throw new Error("invalid credentials");
     validate(req.body);
     const { emailId, password, firstName } = req.body;
     req.body.password = await bcrypt.hash(password, 10);
-    req.body.role = "admin";
-    await User.create(req.body);
+    const user = await User.create(req.body);
     const token = jwt.sign(
-      { _id: User._id, emailId: emailId, role: "admin" },
+      { _id: user._id, emailId: emailId, role: user.role },
       process.env.SECRET_KEY,
       { expiresIn: 60 * 60 },
     );

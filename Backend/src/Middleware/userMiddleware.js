@@ -2,9 +2,9 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models/User");
 const { redisClient } = require("../config/redis");
 
-const userMiddleware = async (req, res) => {
+const userMiddleware = async (req, res, next) => {
   try {
-    const { token } = req.cookie;
+    const { token } = req.cookies;
     if (!token) throw new Error("invalid tokens");
     const payload = await jwt.verify(token, process.env.SECRET_KEY);
     const { _id } = payload;
@@ -16,8 +16,8 @@ const userMiddleware = async (req, res) => {
     req.result = result;
     next();
   } catch (err) {
-    res.status(401).send("error "+err.message);
+    res.status(401).send("error " + err.message);
   }
 };
 
-module.exports={userMiddleware};
+module.exports = { userMiddleware };
