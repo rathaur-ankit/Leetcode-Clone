@@ -1,3 +1,4 @@
+const { redisClient } = require("../config/redis");
 const { User } = require("../models/User");
 const { validate } = require("../utils/validator");
 const bcrypt = require("bcrypt");
@@ -43,7 +44,13 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-  } catch (err) {}
+    const {token}=req.cookie;
+    const payload=jwt.decode(token);
+    await redisClient.set(`token${token}`,"Blocked");
+    await redisClient.expireAt(`token${token}`,payload.exp);
+    res.cookie("token",null,{expires:new Date(Date.now())});
+    res.status(200).send("Logout succussfully");
+  } catch (err) {res.status(401).send("error occured")};
 };
 
 const getProfile = async (req, res) => {

@@ -16,7 +16,7 @@ const userMiddleware = async (req, res) => {
     req.result = result;
     next();
   } catch (err) {
-    console.log("error " + err);
+    res.status(401).send("error "+err.message);
   }
 };
 
