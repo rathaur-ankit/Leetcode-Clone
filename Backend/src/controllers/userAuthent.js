@@ -9,9 +9,10 @@ const register = async (req, res) => {
     validate(req.body);
     const { emailId, password, firstName } = req.body;
     req.body.password = await bcrypt.hash(password, 10);
+    req.body.role = "user";
     await User.create(req.body);
     const token = jwt.sign(
-      { _id: User._id, emailId: emailId },
+      { _id: User._id, emailId: emailId, role: "user" },
       process.env.SECRET_KEY,
       { expiresIn: 60 * 60 },
     );
@@ -31,7 +32,7 @@ const login = async (req, res) => {
     const alllowed = await bcrypt.compare(password, user.password);
     if (!alllowed) throw new Error("Invalid Credentials");
     const token = jwt.sign(
-      { _id: user._id, emailId: emailId },
+      { _id: user._id, emailId: emailId, role: user.role },
       process.env.SECRET_KEY,
       { expiresIn: 60 * 60 },
     );
@@ -44,13 +45,34 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    const {token}=req.cookie;
-    const payload=jwt.decode(token);
-    await redisClient.set(`token${token}`,"Blocked");
-    await redisClient.expireAt(`token${token}`,payload.exp);
-    res.cookie("token",null,{expires:new Date(Date.now())});
+    const { token } = req.cookie;
+    const payload = jwt.decode(token);
+    await redisClient.set(`token${token}`, "Blocked");
+    await redisClient.expireAt(`token${token}`, payload.exp);
+    res.cookie("token", null, { expires: new Date(Date.now()) });
     res.status(200).send("Logout succussfully");
-  } catch (err) {res.status(401).send("error occured")};
+  } catch (err) {
+    res.status(401).send("error occured");
+  }
+};
+
+const adminRegister = async (req, res) => {
+  try {
+    validate(req.body);
+    const { emailId, password, firstName } = req.body;
+    req.body.password = await bcrypt.hash(password, 10);
+    req.body.role = "admin";
+    await User.create(req.body);
+    const token = jwt.sign(
+      { _id: User._id, emailId: emailId, role: "admin" },
+      process.env.SECRET_KEY,
+      { expiresIn: 60 * 60 },
+    );
+    res.cookie("token", token, { maxAge: 60 * 60 * 1000 });
+    res.status(200).send("register successfully");
+  } catch (err) {
+    res.status(400).send("error " + err);
+  }
 };
 
 const getProfile = async (req, res) => {
@@ -65,4 +87,4 @@ const getProfile = async (req, res) => {
     console.log("error " + err);
   }
 };
-module.exports = { register, login, logout, getProfile };
+module.exports = { register, login, logout, adminRegister, getProfile };
