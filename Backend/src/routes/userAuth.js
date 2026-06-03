@@ -1,5 +1,4 @@
 const express = require("express");
-const { model } = require("mongoose");
 const authRouter = express.Router();
 const {
   register,
