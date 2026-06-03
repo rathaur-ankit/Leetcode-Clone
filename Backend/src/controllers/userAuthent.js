@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const {User} = require("../models/User");
 const validate = require("../utils/validator");
 const bcrypt = require("bcrypt");
 const jwt=require("jsonwebtoken");
@@ -46,3 +46,20 @@ const logout=async (req,res)=>{
 
     }
 }
+
+ const getProfile=async (req,res)=>{
+  try{
+    const {emailId,password}=req.body;
+    if(!emailId || !password)
+      throw new Error("invalid credentials");
+     const user=await User.findOne({emailId});
+     const isAllowed=bcrypt.compare(password,user.password);
+     if(!isAllowed)
+      throw new Error("invalide credentials");
+    res.status(200).send(user);
+  }
+  catch(err){
+   console.log("error "+err);
+  }
+ };
+ module.exports ={register,login,logout,getProfile};
