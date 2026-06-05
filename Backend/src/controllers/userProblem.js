@@ -39,5 +39,8 @@ const createProblem = async (req, res) => {
       ...req.body,
       problemCreator: req.result._id,
     });
-  } catch (err) {}
+    res.status(201).send("Problem Saved Successfully");
+  } catch (err) {
+    res.status(400).send("error " + err.message);
+  }
 };
