@@ -103,5 +103,23 @@ const deleteProblem = async (req, res) => {
     res.status(500).send("Error " + err.message);
   }
 };
+const getProblemById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (!id) return res.status(400).send("id is missing");
+    const getProblem = await Problem.findById({ id });
+    if (!getProblem) return res.status(400).send("Problem doesn't exist");
+    res.status(200).send(getProblem);
+  } catch (err) {
+    res.status(500).send("Error " + err.message);
+  }
+};
 
-module.exports = { createProblem, updateProblem, deleteProblem };
+module.exports = {
+  createProblem,
+  updateProblem,
+  deleteProblem,
+  getProblemById,
+  getAllProblem,
+  solvedAllProblemByUser,
+};
