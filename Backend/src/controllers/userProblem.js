@@ -114,7 +114,15 @@ const getProblemById = async (req, res) => {
     res.status(500).send("Error " + err.message);
   }
 };
-
+const getAllProblem = async (req, res) => {
+  try {
+    const allProblem = await Problem.find({});
+    if (!allProblem) return res.status(400).send("Problem is missing");
+    res.status(200).send(allProblem);
+  } catch (err) {
+    res.status(500).send("Error " + err.message);
+  }
+};
 module.exports = {
   createProblem,
   updateProblem,
