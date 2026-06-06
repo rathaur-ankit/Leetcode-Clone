@@ -116,7 +116,9 @@ const getProblemById = async (req, res) => {
 };
 const getAllProblem = async (req, res) => {
   try {
-    const allProblem = await Problem.find({});
+    const allProblem = await Problem.find({}).select(
+      "_id title difficulty tags",
+    );
     if (allProblem.length == 0)
       return res.status(400).send("Problem is missing");
     res.status(200).send(allProblem);
@@ -130,5 +132,5 @@ module.exports = {
   deleteProblem,
   getProblemById,
   getAllProblem,
-  allSolvedProblemByUser,
+  // allSolvedProblemByUser,
 };
