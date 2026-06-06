@@ -92,5 +92,16 @@ const updateProblem = async (req, res) => {
     res.status(400).send("Error " + err.message);
   }
 };
+const deleteProblem = async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (!id) return res.status(400).send("Id is missing");
+    const deleteProblem = await Problem.findByIdAndDelete({ id });
+    if (!deleteProblem) return res.status(400).send("Problem is missing");
+    res.status(200).send("Problem deleted successfully");
+  } catch (err) {
+    res.status(500).send("Error " + err.message);
+  }
+};
 
-module.exports = { createProblem, updateProblem };
+module.exports = { createProblem, updateProblem, deleteProblem };

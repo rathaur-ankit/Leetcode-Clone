@@ -1,7 +1,11 @@
 const express = require("express");
 const problemRouter = express.Router();
 const { adminMiddleware } = require("../Middleware/adminMiddleware");
-const { createProblem, updateProblem } = require("../controllers/userProblem");
+const {
+  createProblem,
+  updateProblem,
+  deleteProblem,
+} = require("../controllers/userProblem");
 const { userMiddleware } = require("../Middleware/userMiddleware");
 
 problemRouter.post("/create", adminMiddleware, createProblem);
