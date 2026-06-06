@@ -7,7 +7,7 @@ const {
   deleteProblem,
   getProblemById,
   getAllProblem,
-  solvedAllProblemByUser,
+  allSolvedProblemByUser,
 } = require("../controllers/userProblem");
 const { userMiddleware } = require("../Middleware/userMiddleware");
 
