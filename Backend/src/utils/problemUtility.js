@@ -18,7 +18,7 @@ const submitBatch = async (submissions) => {
     method: "POST",
     url: "https://judge0-ce.p.rapidapi.com/submissions/batch",
     params: {
-      base64_encoded: "true",
+      base64_encoded: "false",
     },
     headers: {
       "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
