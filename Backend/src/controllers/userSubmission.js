@@ -57,6 +57,10 @@ const submitCode = async (req, res) => {
     submittedResult.runtime = runtime;
     submittedResult.memory = memory;
     await submittedResult.save();
+    if (!req.result.problemSolved.includes(problemId)) {
+      req.result.problemSolved.push(problemId);
+      await req.result.save();
+    }
     res.status(201).send(submittedResult);
   } catch (err) {
     res.status(400).send("error " + err.message);
