@@ -78,5 +78,5 @@ const problemSchema = new Schema({
     required: true,
   },
 });
-const Problem = mongoose.model("Problem", problemSchema);
+const Problem = mongoose.model("problem", problemSchema);
 module.exports = { Problem };
