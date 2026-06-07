@@ -1,4 +1,5 @@
 const { Problem } = require("../models/problem");
+const { User } = require("../models/User");
 const {
   getLanguageById,
   submitBatch,
@@ -129,8 +130,12 @@ const getAllProblem = async (req, res) => {
 
 const allSolvedProblemByUser = async (req, res) => {
   try {
-    const count = req.result.problemSolved.length;
-    res.status(200).send(count);
+    const userId = req.result._id;
+    const user = await User.findById(userId).populate({
+      path: "problemSolved",
+      select: "_id title difficulty tags",
+    });
+    res.status(200).send(user.solvedProblem);
   } catch (err) {
     res.status(500).send("server error " + err.message);
   }
