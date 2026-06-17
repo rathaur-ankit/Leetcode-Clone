@@ -140,7 +140,12 @@ const allSolvedProblemByUser = async (req, res) => {
     res.status(500).send("server error " + err.message);
   }
 };
-
+const submittedProblem = async (req, res) => {
+  try {
+    const userId = req.result._id;
+    const problemId = req.params.pid;
+  } catch (err) {}
+};
 module.exports = {
   createProblem,
   updateProblem,
@@ -148,4 +153,5 @@ module.exports = {
   getProblemById,
   getAllProblem,
   allSolvedProblemByUser,
+  submittedProblem,
 };
