@@ -1,5 +1,6 @@
 const { Problem } = require("../models/problem");
 const { User } = require("../models/User");
+const { submissions } = require("../models/submission");
 const {
   getLanguageById,
   submitBatch,
@@ -144,7 +145,12 @@ const submittedProblem = async (req, res) => {
   try {
     const userId = req.result._id;
     const problemId = req.params.pid;
-  } catch (err) {}
+    const ans = await submissions.find({ userId, problemId });
+    if (ans.length == 0) return res.status(200).send("no submisson is present");
+    res.status(200).send(ans);
+  } catch (err) {
+    res.status(400).send("internal server error " + err.message);
+  }
 };
 module.exports = {
   createProblem,

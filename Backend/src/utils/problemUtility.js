@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const getLangugageById = (lang) => {
+const getLanguageById = (lang) => {
   const language = {
     "c++": 106,
     java: 91,
@@ -72,4 +72,4 @@ const submitToken = async (resultToken) => {
   }
 };
 
-module.exports = { getLangugageById, submitBatch, submitToken };
+module.exports = { getLanguageById, submitBatch, submitToken };
