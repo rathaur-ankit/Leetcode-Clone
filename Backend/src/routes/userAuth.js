@@ -6,6 +6,7 @@ const {
   logout,
   adminRegister,
   getProfile,
+  deleteProfile,
 } = require("../controllers/userAuthent");
 const { userMiddleware } = require("../Middleware/userMiddleware");
 const { adminMiddleware } = require("../Middleware/adminMiddleware");
@@ -15,5 +16,6 @@ authRouter.post("/login", login);
 authRouter.post("/logout", userMiddleware, logout);
 authRouter.get("/getProfile", getProfile);
 authRouter.post("/admin/register", adminMiddleware, adminRegister);
+authRouter.delete("/profile", userMiddleware, deleteProfile);
 
 module.exports = { authRouter };

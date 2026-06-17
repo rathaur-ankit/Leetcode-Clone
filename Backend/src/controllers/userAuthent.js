@@ -1,5 +1,6 @@
 const { redisClient } = require("../config/redis");
 const { User } = require("../models/User");
+const { submissions } = require("../models/submission");
 const { validate } = require("../utils/validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -86,5 +87,12 @@ const getProfile = async (req, res) => {
   } catch (err) {
     console.log("error " + err);
   }
+};
+const deleteProfile = async (req, res) => {
+  try {
+    const userId = req.result._id;
+    await User.findByIdAndDelete(userId);
+    await submissions.deleteMany(userId);
+  } catch (err) {}
 };
 module.exports = { register, login, logout, adminRegister, getProfile };
