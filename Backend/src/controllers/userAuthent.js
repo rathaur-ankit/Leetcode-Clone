@@ -93,6 +93,9 @@ const deleteProfile = async (req, res) => {
     const userId = req.result._id;
     await User.findByIdAndDelete(userId);
     await submissions.deleteMany(userId);
-  } catch (err) {}
+    res.status(200).send("user deleted successfully");
+  } catch (err) {
+    res.status(500).send("internal server error " + err.message);
+  }
 };
 module.exports = { register, login, logout, adminRegister, getProfile };
